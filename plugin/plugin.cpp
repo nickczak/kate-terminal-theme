@@ -21,6 +21,9 @@
 #include <QJsonObject>
 #include <QDateTime>
 #include <QPalette>
+#include <KColorSchemeManager>
+#include <QSaveFile>
+#include <QDir>
 #include <kde_terminal_interface.h>
 #include <QStandardPaths>
 
@@ -62,6 +65,12 @@ public:
     explicit ExplorerView(KTextEditor::MainWindow *window) : QObject(window), main(window) {
         qApp->installEventFilter(this);
         recordDiagnostic("plugin-view-created", main);
+        QTimer::singleShot(1000, this, [this] {
+            saveAppearanceStatus();
+            const QString log = qEnvironmentVariable("KATE_TERMINAL_DIAGNOSTICS");
+            if (!log.isEmpty() && main && main->window())
+                main->window()->grab().save(QFileInfo(log).dir().filePath(QStringLiteral("appearance.png")));
+        });
         const QString icon = QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("kate-terminal-theme/icons/kate-terminal-black.svg"));
         if (QFile::exists(icon)) {
             const QIcon appIcon(icon);
@@ -228,6 +237,13 @@ private:
     void applyAppearance() {
         if (applyingAppearance || !main || !main->window()) return;
         applyingAppearance = true;
+        auto *manager = KColorSchemeManager::instance();
+        const QModelIndex scheme = manager->indexForSchemeId(QStringLiteral("TerminalBlack"));
+        if (scheme.isValid() && (!nativeSchemeActivated || manager->activeSchemeId() != QLatin1String("TerminalBlack"))) {
+            nativeSchemeActivated = true;
+            manager->activateScheme(scheme);
+        }
+        if (main->window()->windowOpacity() != 1.0) main->window()->setWindowOpacity(1.0);
         // The app can also be started by session restore or a file association,
         // without the launcher's -stylesheet flag. Load the same installed QSS.
         const QString path = QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("kate-terminal.qss"));
@@ -254,6 +270,36 @@ private:
             }
         }
         applyingAppearance = false;
+        saveAppearanceStatus();
+    }
+    void saveAppearanceStatus() {
+        if (!main || !main->window()) return;
+        QJsonObject state{
+            {"build", "native-black-v4"},
+            {"pid", QCoreApplication::applicationPid()},
+            {"native_scheme", KColorSchemeManager::instance()->activeSchemeId()},
+            {"stylesheet_applied", qApp->styleSheet().contains(QStringLiteral("#000000"))},
+            {"window_background", qApp->palette().color(QPalette::Active, QPalette::Window).name()},
+            {"inactive_background", qApp->palette().color(QPalette::Inactive, QPalette::Window).name()},
+            {"base_background", qApp->palette().color(QPalette::Active, QPalette::Base).name()},
+            {"window_opacity", main->window()->windowOpacity()},
+            {"config_directory", QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation)},
+            {"stylesheet_path", QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("kate-terminal.qss"))}
+        };
+        if (auto *view = main->activeView()) state["editor_theme"] = view->configValue(QStringLiteral("theme")).toString();
+        if (state == lastAppearanceState) return;
+        lastAppearanceState = state;
+        state["time"] = QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
+        QString directory = qEnvironmentVariable("XDG_STATE_HOME");
+        if (directory.isEmpty()) directory = QDir::homePath() + QStringLiteral("/.local/state");
+        directory += QStringLiteral("/kate-terminal-theme");
+        if (!QDir().mkpath(directory)) return;
+        QSaveFile status(directory + QStringLiteral("/appearance.json"));
+        if (status.open(QIODevice::WriteOnly)) {
+            status.setPermissions(QFile::ReadOwner | QFile::WriteOwner);
+            status.write(QJsonDocument(state).toJson(QJsonDocument::Indented));
+            status.commit();
+        }
     }
     void applyTerminalProfile() {
         const QList<QObject *> roots{main->window(), main->pluginView(QStringLiteral("katekonsoleplugin"))};
@@ -303,6 +349,8 @@ private:
     bool opening = false;
     bool refreshQueued = false;
     bool applyingAppearance = false;
+    bool nativeSchemeActivated = false;
+    QJsonObject lastAppearanceState;
 };
 
 class ExplorerCommand : public KTextEditor::Command {

@@ -2,7 +2,6 @@
   <img src="assets/kate-terminal-black.svg" alt="Kate logo with a pure-black circular background" width="160">
 </p>
 
-<h1 align="center">Kate Terminal Theme</h1>
 <h4 align="center">A pure-black Kate setup for Vim users.</h4>
 
 <p align="center">
