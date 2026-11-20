@@ -1,0 +1,8 @@
+{
+    "KPlugin": {
+        "Id": "showcase_recorder",
+        "Name": "Kate showcase recorder (development only)",
+        "EnabledByDefault": true,
+        "License": "MIT"
+    }
+}

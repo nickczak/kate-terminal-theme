@@ -1,0 +1,10 @@
+{
+    "KPlugin": {
+        "Name": "Kate Terminal Theme",
+        "Description": "GitHub Black appearance, Projects Vim navigation, and :Ex",
+        "Version": "1.0.0",
+        "License": "MIT",
+        "EnabledByDefault": true,
+        "Id": "kateterminalex"
+    }
+}

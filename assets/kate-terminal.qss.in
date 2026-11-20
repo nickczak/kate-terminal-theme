@@ -1,0 +1,115 @@
+/* Kate terminal appearance */
+QWidget {
+    font-family: "Noto Sans Mono";
+    font-size: 10pt;
+    background-color: #000000;
+    color: #ffffff;
+}
+QMainWindow, QMenuBar, QMenu, QToolBar, QStatusBar,
+QDockWidget, QTabWidget::pane, QTreeView, QListView,
+QAbstractScrollArea, QHeaderView::section {
+    background-color: #000000;
+    color: #ffffff;
+}
+QMenuBar, QToolBar, QStatusBar, QTabWidget::pane {
+    border: none;
+}
+QMenuBar::item:selected, QMenu::item:selected {
+    background-color: #232323;
+    color: #ffffff;
+}
+QTabBar::tab {
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    border-bottom: 1px solid #003344;
+    padding: 5px 12px;
+}
+QTabBar::tab:selected {
+    color: #ffffff;
+    border-bottom: 1px solid #5fd7ff;
+}
+QTabBar::tab:hover {
+    color: #ffffff;
+    background-color: #17003b;
+}
+QLineEdit, QComboBox, QSpinBox, QPlainTextEdit, QTextEdit {
+    background-color: #000000;
+    color: #ffffff;
+    selection-background-color: #232323;
+    selection-color: #ffffff;
+}
+QToolButton {
+    background-color: transparent;
+    color: #ffffff;
+    border: none;
+    padding: 3px;
+}
+QToolButton:hover, QToolButton:checked {
+    background-color: #17003b;
+}
+QSplitter::handle {
+    background-color: #000000;
+}
+
+/* Terminal file tree */
+QTreeView {
+    font-size: 10pt;
+    background-color: #000000;
+    alternate-background-color: #000000;
+    show-decoration-selected: 1;
+    outline: none;
+    border: none;
+    icon-size: 16px;
+}
+QTreeView::item {
+    min-height: 20px;
+    padding: 0px 3px;
+    border: none;
+}
+QTreeView::item:selected {
+    background-color: #232323;
+    color: #ffffff;
+}
+QTreeView::item:hover:!selected {
+    background-color: #17003b;
+}
+QTreeView::branch {
+    background-color: transparent;
+    image: none;
+    border-image: none;
+}
+QTreeView::branch:has-siblings:!adjoins-item {
+    border-image: url(@TREE_ASSET_DIR@/vertical.svg) 0;
+}
+QTreeView::branch:has-siblings:adjoins-item:!has-children {
+    border-image: url(@TREE_ASSET_DIR@/tee.svg) 0;
+}
+QTreeView::branch:!has-siblings:adjoins-item:!has-children {
+    border-image: url(@TREE_ASSET_DIR@/corner.svg) 0;
+}
+QTreeView::branch:has-children:closed:has-siblings {
+    border-image: url(@TREE_ASSET_DIR@/closed.svg) 0;
+}
+QTreeView::branch:has-children:closed:!has-siblings {
+    border-image: url(@TREE_ASSET_DIR@/closed-last.svg) 0;
+}
+QTreeView::branch:has-children:open:has-siblings {
+    border-image: url(@TREE_ASSET_DIR@/open.svg) 0;
+}
+QTreeView::branch:has-children:open:!has-siblings {
+    border-image: url(@TREE_ASSET_DIR@/open-last.svg) 0;
+}
+
+/* Vim Dark interface accents */
+QTabBar::tab:selected { color: #5fd7ff; }
+QMenuBar::item:selected, QMenu::item:selected { color: #5fd7ff; }
+QLineEdit:focus, QComboBox:focus, QSpinBox:focus {
+    border: 1px solid #5fd7ff;
+}
+QToolButton:checked { color: #ff54ff; }
+QToolTip {
+    background-color: #000000;
+    color: #ffffff;
+    border: 1px solid #003344;
+}

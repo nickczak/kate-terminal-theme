@@ -1,0 +1,46 @@
+{
+  "General": {
+    "Icon size for left and right sidebar buttons": "16",
+    "Show Full Path in Title": "true",
+    "Show Menu Bar": "true",
+    "Show Status Bar": "true",
+    "Show Tab Bar": "true",
+    "Show Tabs Close Button": "false",
+    "Show Symbol In Navigation Bar": "false",
+    "Show Url Nav Bar": "false",
+    "Show text for left and right sidebar": "true",
+    "Show welcome view for new window": "false"
+  },
+  "UiSettings": {
+    "ColorScheme": "TerminalBlack"
+  },
+  "KTextEditor Renderer": {
+    "Auto Color Theme Selection": "false",
+    "Color Theme": "GitHub Black",
+    "Text Font": "Noto Sans Mono,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,,0,0",
+    "Show Indentation Lines": "false",
+    "Word Wrap Marker": "false"
+  },
+  "KTextEditor View": {
+    "Input Mode": "1",
+    "Vi Input Mode Steal Keys": "true",
+    "Vi Relative Line Numbers": "true",
+    "Line Numbers": "true",
+    "Scroll Bar MiniMap": "false",
+    "Scroll Bar Preview": "false",
+    "Show Folding Icons On Hover Only": "true"
+  },
+  "filetree": {
+    "shadingEnabled": "false",
+    "showToolbar": "false",
+    "showCloseButton": "false",
+    "listMode": "false"
+  },
+  "Kate Plugins": {
+    "kateterminalex": "true",
+    "kateprojectplugin": "true",
+    "katekonsoleplugin": "true",
+    "katefiletreeplugin": "true",
+    "libkateterminalex": "false"
+  }
+}
